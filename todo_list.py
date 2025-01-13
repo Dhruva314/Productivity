@@ -68,7 +68,7 @@ def complete_task():
         messagebox.showwarning("Selection Error", "Please select a task to mark as complete.")
 
 # Function to send stop signal and exit
-def send_stop_signal():
+def todo_list_termination():
     with open("todo_list_history.txt", "a") as file:  
       file.write(f"Date: {date}\n")
       for task in todo_list:
@@ -95,7 +95,7 @@ delete_button.pack(side=tk.LEFT, padx=10)
 complete_button = tk.Button(root, text="Mark as Complete", command=complete_task)
 complete_button.pack(side=tk.LEFT, padx=10)
 
-stop_button = tk.Button(root, text="Send Stop Signal", command=send_stop_signal, bg="red", fg="white")
+stop_button = tk.Button(root, text="Send Stop Signal", command=todo_list_termination, bg="red", fg="white")
 stop_button.pack(pady=20)
 
 # Run the application
