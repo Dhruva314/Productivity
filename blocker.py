@@ -1,12 +1,16 @@
 import psutil
 import time
+import os
 
 # List of application names to block (case-sensitive)
-BLOCKED_APPS = ["chrome.exe", "msedge.exe"]  # Add application names here
+BLOCKED_APPS = ["msedge.exe"]  # Add application names here
+STOP_FILE = "C:/Users/dhruv/Coding/Productivity/STOP.txt"
+
+os.remove(STOP_FILE)
 
 def block_apps():
     print("Application blocker is running...")
-    while True:
+    while (os.path.exists(STOP_FILE) == False):
         for process in psutil.process_iter(['name']):
             try:
                 process_name = process.info['name']
