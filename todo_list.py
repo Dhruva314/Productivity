@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+import datetime
 
 # Create the main application window
 root = tk.Tk()
@@ -7,30 +8,46 @@ root.title("To-Do List Application")
 root.geometry("400x500")
 
 # To-Do List Storage
+date = datetime.date.today()
 todo_list = []
+todo_list_display = []
 
 # Function to update the listbox
 def update_listbox():
     listbox.delete(0, tk.END)  # Clear the listbox
-    for task in todo_list:
+    for task in todo_list_display:
         listbox.insert(tk.END, task)  # Add tasks to the listbox
 
 # Function to add a new task
 def add_task():
     task = task_entry.get().strip()
     if task:
-        todo_list.append(task)
+        todo_list.append({"Task": task, "Completed": False})
+        todo_list_display.append(task)
         update_listbox()
         task_entry.delete(0, tk.END)
     else:
         messagebox.showwarning("Input Error", "Task cannot be empty!")
+    
+    char_count = 0
+    for task in todo_list:
+      char_count += len(task["Task"])
+
+    if (char_count >= 20*3 and len(todo_list) >= 3):
+        with open("STOP.txt", "w") as file:
+            file.write("Stopping application blocker.\n")
 
 # Function to delete the selected task
 def delete_task():
+    print(todo_list_display)
     selected_task_index = listbox.curselection()
     if selected_task_index:
         task_to_remove = listbox.get(selected_task_index)
-        todo_list.remove(task_to_remove)
+        todo_list_display.remove(task_to_remove)
+        for i, task in enumerate(todo_list):
+            if (task["Task"] == task_to_remove):
+                todo_list.pop(i)
+                break
         update_listbox()
     else:
         messagebox.showwarning("Selection Error", "Please select a task to delete.")
@@ -40,17 +57,23 @@ def complete_task():
     selected_task_index = listbox.curselection()
     if selected_task_index:
         task_to_complete = listbox.get(selected_task_index)
-        todo_list.remove(task_to_complete)
-        todo_list.append(f"{task_to_complete} (Completed)")
+        for task in todo_list:
+            if (task["Task"] == task_to_complete):
+                task["Completed"] = True
+                break
+        todo_list_display.remove(task_to_complete)
+        todo_list_display.append(f"{task_to_complete} (Completed)")
         update_listbox()
     else:
         messagebox.showwarning("Selection Error", "Please select a task to mark as complete.")
 
 # Function to send stop signal and exit
 def send_stop_signal():
-    with open("STOP.txt", "w") as file:
-        file.write("Stopping application blocker.\n")
-    messagebox.showinfo("Stop Signal", "Stop signal sent. Exiting.")
+    with open("todo_list_history.txt", "a") as file:  
+      file.write(f"Date: {date}\n")
+      for task in todo_list:
+          file.write(f"Task: {task["Task"]}\n", )
+          file.write(f"Completed: {task["Completed"]}\n" )
     root.destroy()
 
 # UI Components
