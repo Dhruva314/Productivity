@@ -1,1 +1,1 @@
-STOP
+Stopping application blocker.
