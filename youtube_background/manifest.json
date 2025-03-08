@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Tab Scheduler v3",
+  "version": "1.0",
+  "description": "Closes YouTube tabs outside allowed hours.",
+  "permissions": ["tabs", "storage", "notifications"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "settings.html"
+  }
+}

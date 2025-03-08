@@ -3,10 +3,11 @@ import time
 import os
 
 # List of application names to block (case-sensitive)
-BLOCKED_APPS = ["msedge.exe"]  # Add application names here
+BLOCKED_APPS = ["msedge.exe", "chrome.exe"]  # Add application names here
 STOP_FILE = "C:/Users/dhruv/Coding/Productivity/STOP.txt"
 
-os.remove(STOP_FILE)
+if (os.path.exists(STOP_FILE) == True):
+    os.remove(STOP_FILE)
 
 def block_apps():
     print("Application blocker is running...")
