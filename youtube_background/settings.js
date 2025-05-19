@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("schedule-container");
   const saveBtn = document.getElementById("save-btn");
+  const resetBtn = document.getElementById("reset-btn");
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -76,7 +77,25 @@ document.addEventListener("DOMContentLoaded", () => {
         chrome.runtime.sendMessage({ action: "recheckTabs" }); // 🔥 Triggers tab recheck
     });
 });
-
+  
+resetBtn.addEventListener("click", () => {
+    const defaultSlots = [
+      { start: "09:00", end: "12:00" },
+      { start: "14:00", end: "19:00" },
+      { start: "20:30", end: "00:00" }
+    ];
+  
+    const defaultSchedule = {};
+    for (let i = 0; i < 7; i++) {
+      defaultSchedule[i] = [...defaultSlots];
+    }
+  
+    chrome.storage.local.set({ schedule: defaultSchedule }, () => {
+      alert("Default schedule set!");
+      loadSchedule(); // Refresh the UI
+      chrome.runtime.sendMessage({ action: "recheckTabs" }); // Trigger recheck
+    });
+  });
 
   loadSchedule();
 });

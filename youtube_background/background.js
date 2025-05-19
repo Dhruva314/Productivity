@@ -1,3 +1,31 @@
+const allowedYouTubeUrl = "https://www.youtube.com/watch?v=jfKfPfyJRdk";
+const blackList = [
+  "youtube.com",
+  "hurawatchtv.tv",
+  "instagram.com/direct"
+];
+
+// Checks if a new tab is in the list of permitted websites
+function isBlackListed(url) {
+  try {
+    if (url === allowedYouTubeUrl) {
+      return false;
+    }
+    
+    const parsedUrl = new URL(url);
+    const href = parsedUrl.href;
+
+    for (let i = 0; i < blackList.length; i++) {
+      if (url.includes(blackList[i])) return true;
+    }
+
+    return false;
+  } catch (e) {
+    console.error("Invalid URL:", url);
+    return false;
+  }
+}
+
 // Checks if the current time is within the allowed schedule
 async function isWithinSchedule() {
   const data = await chrome.storage.local.get("schedule");
@@ -22,7 +50,7 @@ async function isWithinSchedule() {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   // console.log(`Tab updated: ${tabId}`, changeInfo, tab.url);
 
-  if (changeInfo.status === "complete" && tab.url && tab.url.includes("youtube.com")) {
+  if (changeInfo.status === "complete" && tab.url && isBlackListed(tab.url)) {
     // console.log("Youtube Detected");
     
     isWithinSchedule().then((block) => {  // Use `.then()` to handle async function
@@ -38,10 +66,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 function checkAndCloseTab(tabId, url) {
-  const youtubePattern = /^https:\/\/www\.youtube\.com\/watch\?v=[^&]+&list=PLc2GtNo0-wWeKdod0MIXk-aKSSU1HuYJl&index=\d+$/;
-  if (url.includes("youtube.com") && !youtubePattern.test(url)) {
-      chrome.tabs.remove(tabId);
-  }
+  // const youtubePattern = /^https:\/\/www\.youtube\.com\/watch\?v=jfKfPfyJRdk$/;
+  // if (url.includes("youtube.com") && !youtubePattern.test(url)) {
+  //     chrome.tabs.remove(tabId);
+  // }
+  if (isBlackListed(url)) chrome.tabs.remove(tabId);
 }
 
 
@@ -49,7 +78,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "recheckTabs") {
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach((tab) => {
-        if (tab.url && tab.url.includes("youtube.com")) {
+        if (tab.url && isBlackListed(tab.url)) {
           // Check if the current time is within the allowed schedule
           isWithinSchedule().then((block) => {  // Use `.then()` to handle async function
             if (block) {
