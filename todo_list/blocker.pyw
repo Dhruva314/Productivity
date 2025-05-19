@@ -4,7 +4,7 @@ import os
 
 # List of application names to block (case-sensitive)
 BLOCKED_APPS = ["msedge.exe", "chrome.exe"]  # Add application names here
-STOP_FILE = "C:/Users/dhruv/Coding/Productivity/STOP.txt"
+STOP_FILE = "C:/Users/dhruv/Coding/Productivity/todo_list/STOP.txt"
 
 if (os.path.exists(STOP_FILE) == True):
     os.remove(STOP_FILE)

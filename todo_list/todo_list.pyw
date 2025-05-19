@@ -95,7 +95,7 @@ delete_button.pack(side=tk.LEFT, padx=10)
 complete_button = tk.Button(root, text="Mark as Complete", command=complete_task)
 complete_button.pack(side=tk.LEFT, padx=10)
 
-stop_button = tk.Button(root, text="Send Stop Signal", command=todo_list_termination, bg="red", fg="white")
+stop_button = tk.Button(root, text="Close", command=todo_list_termination, bg="red", fg="white")
 stop_button.pack(pady=20)
 
 # Run the application
