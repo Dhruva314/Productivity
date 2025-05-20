@@ -2,7 +2,9 @@ const allowedYouTubeUrl = "https://www.youtube.com/watch?v=jfKfPfyJRdk";
 const blackList = [
   "youtube.com",
   "hurawatchtv.tv",
-  "instagram.com/direct"
+  "instagram.com/reels",
+  "snak.ee",
+  "google.com/search?q=minesweeper", 
 ];
 
 // Checks if a new tab is in the list of permitted websites
