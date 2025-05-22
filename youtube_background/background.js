@@ -38,12 +38,18 @@ async function isWithinSchedule() {
 
   const slots = schedule[day] || [];
   return slots.some(slot => {
-      const [startH, startM] = slot.start.split(":").map(Number);
-      const [endH, endM] = slot.end.split(":").map(Number);
-      const startMinutes = startH * 60 + startM;
-      const endMinutes = endH * 60 + endM;
-      
-      return currentTime >= startMinutes && currentTime <= endMinutes;
+    const [startH, startM] = slot.start.split(":").map(Number);
+    const [endH, endM] = slot.end.split(":").map(Number);
+    const startMinutes = startH * 60 + startM;
+    const endMinutes = endH * 60 + endM;
+
+    if (startMinutes <= endMinutes) {
+        // Normal case: e.g. 10:00 to 11:00
+        return currentTime >= startMinutes && currentTime <= endMinutes;
+    } else {
+        // Cross-midnight case: e.g. 23:00 to 01:00
+        return currentTime >= startMinutes || currentTime <= endMinutes;
+    }
   });
 }
 

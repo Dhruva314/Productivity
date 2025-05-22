@@ -186,3 +186,14 @@ Completed: False
 Task: hhhhhhhhhhhhhhhhh
 Completed: False
 Date: 2025-05-20
+Date: 2025-05-22
+Task: GCG Email
+Completed: True
+Task: GCG Model Summaries
+Completed: True
+Task: GCG Summarise Research
+Completed: True
+Task: Follow up with Team Mates
+Completed: True
+Task: Dishwasher
+Completed: True
